@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Confirmar borrado</h2>
+<p>¿Deseas eliminar al nutriólogo <strong>{{ nutri.nombre }} {{ nutri.apellido }}</strong>?</p>
+<form method="POST">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-danger">Sí, borrar</button>
+  <a href="/ver_nutriologos/" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}
