@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-4">📋 Lista de Citas</h2>
+
+    <div class="text-end mb-3">
+        <a href="{% url 'agregar_cita' %}" class="btn btn-success">➕ Agregar nueva cita</a>
+    </div>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-success">
+            <tr>
+                <th>#</th>
+                <th>Nutriólogo</th>
+                <th>Motivo</th>
+                <th>Estado</th>
+                <th>Fecha</th>
+                <th>Horario</th>
+                <th>Duración</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cita in citas %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ cita.id_nut.nombre }} {{ cita.id_nut.apellido }}</td>
+                <td>{{ cita.motivo }}</td>
+                <td>
+                    {% if cita.estado == "pendiente" %}
+                        <span class="badge bg-warning text-dark">Pendiente</span>
+                    {% elif cita.estado == "confirmada" %}
+                        <span class="badge bg-primary">Confirmada</span>
+                    {% elif cita.estado == "cancelada" %}
+                        <span class="badge bg-danger">Cancelada</span>
+                    {% elif cita.estado == "finalizada" %}
+                        <span class="badge bg-success">Finalizada</span>
+                    {% else %}
+                        <span class="badge bg-secondary">{{ cita.estado }}</span>
+                    {% endif %}
+                </td>
+                <td>{{ cita.fecha }}</td>
+                <td>{{ cita.horario }}</td>
+                <td>{{ cita.duracion }} min</td>
+                <td>
+                    <a href="{% url 'actualizar_cita' cita.id %}" class="btn btn-sm btn-primary">✏️ Editar</a>
+                    <a href="{% url 'borrar_cita' cita.id %}" class="btn btn-sm btn-danger">🗑️ Borrar</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8" class="text-center text-muted">No hay citas registradas aún.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

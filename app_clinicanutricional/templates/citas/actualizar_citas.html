@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+  <h2 class="text-center mb-3">Actualizar Cita</h2>
+  <div class="card p-4 mx-auto" style="max-width:800px;">
+    <form method="POST" action="{% url 'realizar_actualizacion_cita' cita.id %}">
+      {% csrf_token %}
+
+      <div class="row mb-3">
+        <div class="col">
+          <label class="form-label">Fecha:</label>
+          <input type="date" name="fecha" value="{{ cita.fecha }}" class="form-control" required>
+        </div>
+        <div class="col">
+          <label class="form-label">Horario:</label>
+          <input type="time" name="horario" value="{{ cita.horario }}" class="form-control" required>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Motivo:</label>
+        <input type="text" name="motivo" value="{{ cita.motivo }}" class="form-control" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Estado:</label>
+        <select name="estado" class="form-control" required>
+          <option value="pendiente" {% if cita.estado == 'pendiente' %}selected{% endif %}>Pendiente</option>
+          <option value="confirmada" {% if cita.estado == 'confirmada' %}selected{% endif %}>Confirmada</option>
+          <option value="cancelada" {% if cita.estado == 'cancelada' %}selected{% endif %}>Cancelada</option>
+          <option value="finalizada" {% if cita.estado == 'finalizada' %}selected{% endif %}>Finalizada</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Duración (min):</label>
+        <input type="number" name="duracion" value="{{ cita.duracion }}" class="form-control" min="1" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Observaciones:</label>
+        <textarea name="observaciones" class="form-control">{{ cita.observaciones }}</textarea>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col">
+          <label class="form-label">Paciente:</label>
+          <select name="id_paciente" class="form-control" required>
+            {% for p in pacientes %}
+              <option value="{{ p.id }}" {% if cita.id_paciente and cita.id_paciente.id == p.id %}selected{% endif %}>
+                {{ p.nombre }} {{ p.apellido }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col">
+          <label class="form-label">Nutriólogo:</label>
+          <select name="id_nut" class="form-control" required>
+            {% for n in nutriologos %}
+              <option value="{{ n.id }}" {% if cita.id_nut and cita.id_nut.id == n.id %}selected{% endif %}>
+                {{ n.nombre }} {{ n.apellido }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div class="d-grid">
+        <button class="btn btn-primary">Guardar Cambios</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

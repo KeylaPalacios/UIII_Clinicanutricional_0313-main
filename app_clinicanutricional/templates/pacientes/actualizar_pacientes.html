@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+  <h2 class="text-center mb-3">Actualizar Pacientes</h2>
+  <div class="card p-4 mx-auto" style="max-width:800px;">
+    <form method="POST" action="{% url 'realizar_actualizacion_paciente' paciente.id %}">
+      {% csrf_token %}
+
+      <div class="row mb-3">
+        <div class="col">
+          <input type="text" name="nombre" value="{{ paciente.nombre }}" class="form-control">
+        </div>
+        <div class="col">
+          <input type="text" name="apellido" value="{{ paciente.apellido }}" class="form-control">
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col">
+          <input type="text" name="telefono" value="{{ paciente.telefono }}" class="form-control">
+        </div>
+        <div class="col">
+          <input type="date" name="fechnacimiento" value="{{ paciente.fechnacimiento }}">
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <input type="email" name="correo" value="{{ paciente.correo }}" class="form-control">
+      </div>
+
+      <div class="mb-3">
+        <input type="text" name="direccion" value="{{ paciente.direccion }}" class="form-control">
+      </div>
+
+      <div class="row mb-3">
+        <div class="col">
+          <select name="sexo" class="form-control">
+            <option value="Femenino" {% if paciente.sexo == 'Femenino' %}selected{% endif %}>Femenino</option>
+            <option value="Masculino" {% if paciente.sexo == 'Masculino' %}selected{% endif %}>Masculino</option>
+          </select>
+        </div>
+        <div class="col">
+          <select name="id_nut" class="form-control">
+            <option value="">Seleccione Nutriólogo</option>
+            {% for n in nutriologos %}
+              <option value="{{ n.id }}" {% if paciente.id_nut and paciente.id_nut.id == n.id %}selected{% endif %}>{{ n.nombre }} {{ n.apellido }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div class="d-grid">
+        <button class="btn btn-primary">Guardar Cambios</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

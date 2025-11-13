@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-success">Recetas Médicas</h2>
+    <a href="{% url 'agregar_receta' %}" class="btn btn-success mb-3">Agregar nueva receta</a>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-success">
+            <tr>
+                <th>ID</th>
+                <th>Paciente</th>
+                <th>Nutriólogo</th>
+                <th>Tipo de comida</th>
+                <th>Duración</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for receta in recetas %}
+            <tr>
+                <td>{{ receta.id }}</td>
+                <td>{{ receta.id_paciente.nombre }} {{ receta.id_paciente.apellido }}</td>
+                <td>{{ receta.id_nutriologo.nombre }} {{ receta.id_nutriologo.apellido }}</td>
+                <td>{{ receta.tipocomida }}</td>
+                <td>{{ receta.duracion }}</td>
+                <td>
+                    <a href="{% url 'actualizar_receta' receta.id %}" class="btn btn-warning btn-sm">Actualizar</a>
+                    <a href="{% url 'borrar_receta' receta.id %}" class="btn btn-danger btn-sm">Borrar</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center text-muted">No hay recetas registradas.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
